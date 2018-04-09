@@ -26,7 +26,7 @@ def matxMultiply(A,B):
     multiplyLen=len(B);
     column=len(B[0])
     row=len(A)
-    grid=[[0*column]*row]
+    grid=[[0 for i in range(column)] for i in range(row)]
     for i in range(0,row):
         for j in range(0,column):
             res=0
@@ -38,7 +38,7 @@ def matxMultiply(A,B):
 def augmentMatrix(A,b):
     column=len(A[0])+1
     row=len(A)
-    grid=[[0*column]*row]
+    grid=[[0 for i in range(column)] for i in range(row)]
     for i in range(0,row):
         grid[i]=A[i][:]+b[i]
     return grid
@@ -49,10 +49,13 @@ def swapRows(M,r1,r2):
     M[r2]=temp
 
 def scaleRow(M,r,scale):
+    if(scale==0):
+        raise ValueError('illegal value')
+        return None
     for i in range(0,len(M[r])):
         M[r][i]=scale*M[r][i]
 
-def addScaleRow(M,r1,r2,scale):
+def addScaledRow(M,r1,r2,scale):
     for i in range(0,len(M[r1])):
         M[r1][i]=M[r2][i]*scale+M[r1][i]
 
