@@ -102,6 +102,11 @@ def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
 
 
 
-A=[[-6, -3, 7, -7, -8, 6, -6], [-5, 3, 3, 7, 5, -3, 4], [8, 8, -7, -9, -9, 8, 3], [2, -5, -7, -9, 4, -9, -1], [0, -3, -3, -2, -8, 1, -5], [-5, -2, -4, 2, 4, 8, -2], [-8, -5, -7, -9, -1, 6, -2]]
-b=[[0], [1], [2], [3], [4], [5], [6]]
-print gj_Solve(A,b)
+def linearRegression(points):
+    X=[[points[i][0],1] for i in range(len(points))]
+    Y=[points[i][1] for i in range(len(points))]
+    XT=[[points[i][0] for i in range(len(points))],[1 for i in range(len(points))]]
+    XXT=matxMultiply(X,XT)
+    XTY=matxMultiply(XT,Y)
+    gj_Solve(XXT,XTY)
+    return 0,0
