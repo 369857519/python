@@ -62,6 +62,8 @@ def addScaledRow(M,r1,r2,scale):
 def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
     n=len(A)
     M=augmentMatrix(A,b)
+    print(A)
+    print(b)
     #adjust order
     for k in range(n):
         for i in range(k,n):
@@ -72,16 +74,34 @@ def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
                 pass
 
         for j in range(k+1,n):
-            #eliminate all M[_][k]
-            q=float(M[j][k]/M[k][k])
+            #eliminate all M[J][_]
+            q=float(M[j][k])/M[k][k]
             for m in range(k,n+1):
                 M[j][m]-=q*M[k][m]
+    #check rank
+    rank=0
+    for i in range(n):
+        rowCount=0
+        for j in range(n):
+            if abs(M[i][j])>epsilon:
+                rowCount=1
+                break
+        rank+=rowCount
+    if rank<n:
+        return None
     x=[0 for i in range(n)]
-    # calculate actual value
     x[n-1]=float(M[n-1][n])/M[n-1][n-1]
     for i in range(n-1,-1,-1):
         z=0
         for j in range(i+1,n):
             z=z+float(M[i][j]*x[j])
         x[i]=float(M[i][n]-z)/M[i][i]
-    print x
+    res=[[x[i]] for i in range(n)];
+    matxRound(res);
+    return res
+
+
+
+A=[[-6, -3, 7, -7, -8, 6, -6], [-5, 3, 3, 7, 5, -3, 4], [8, 8, -7, -9, -9, 8, 3], [2, -5, -7, -9, 4, -9, -1], [0, -3, -3, -2, -8, 1, -5], [-5, -2, -4, 2, 4, 8, -2], [-8, -5, -7, -9, -1, 6, -2]]
+b=[[0], [1], [2], [3], [4], [5], [6]]
+print gj_Solve(A,b)
