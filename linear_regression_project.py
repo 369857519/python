@@ -14,14 +14,15 @@ def matxRound(M,decPts=4):
 
 def transpose(M):
     pair=shape(M)
-    grid=[[0*pair[1]]*[pair[0]]]
+    grid=[[0 for i in range(pair[0])] for i in range (pair[1])]
     for i in range(0,pair[0]):
         for j in range(0,pair[1]):
-            grid[j][i]=pair[i][j]
+            grid[j][i]=M[i][j]
     return grid
   
 def matxMultiply(A,B):
     if(len(A[0])!=len(B)):
+        raise ValueError('illegal value')
         return None
     multiplyLen=len(B);
     column=len(B[0])
@@ -62,8 +63,6 @@ def addScaledRow(M,r1,r2,scale):
 def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
     n=len(A)
     M=augmentMatrix(A,b)
-    print(A)
-    print(b)
     #adjust order
     for k in range(n):
         for i in range(k,n):
@@ -103,10 +102,13 @@ def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
 
 
 def linearRegression(points):
-    X=[[points[i][0],1] for i in range(len(points))]
-    Y=[points[i][1] for i in range(len(points))]
-    XT=[[points[i][0] for i in range(len(points))],[1 for i in range(len(points))]]
-    XXT=matxMultiply(X,XT)
+    lenPoints=len(points)
+    X=[[points[i][0],1] for i in range(lenPoints)]
+    Y=[[points[i][1]] for i in range(lenPoints)]
+    XT=transpose(X)
+    XXT=matxMultiply(XT,X)
     XTY=matxMultiply(XT,Y)
-    gj_Solve(XXT,XTY)
-    return 0,0
+    res=gj_Solve(XXT,XTY)
+    return res
+
+print linearRegression([(0,0),(1,1),(2,2)])
