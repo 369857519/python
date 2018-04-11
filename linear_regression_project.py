@@ -1,3 +1,4 @@
+import random
 I=[[1,2,3,4],
    [2,3,4,5],
    [3,4,5,6],
@@ -109,6 +110,18 @@ def linearRegression(points):
     XXT=matxMultiply(XT,X)
     XTY=matxMultiply(XT,Y)
     res=gj_Solve(XXT,XTY)
-    return res
+    return res[0][0],res[1][0]
 
-print linearRegression([(0,0),(1,1),(2,2)])
+def testLinearRegression():
+    m=2
+    b=1
+    points=[]
+    for _ in range(10):
+       x=(random.random()*(100))
+       y=x*m+b
+       points.append((x,y))
+    res=linearRegression(points)
+    return m==res[0] and b==res[1]
+
+print testLinearRegression()
+
